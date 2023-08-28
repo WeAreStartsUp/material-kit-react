@@ -7,8 +7,8 @@ import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { MerchantsTable } from 'src/sections/merchant/merchants-table';
-import { MerchantsSearch } from 'src/sections/merchant/merchants-search';
+import { ItemsTable } from 'src/sections/item/items-table';
+import { ItemSearch } from 'src/sections/item/items-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 
 const now = new Date();
@@ -38,7 +38,7 @@ const Page = () => {
 
   useEffect(() => {
     const getMerchantData = async () => {
-      const response = await fetch('http://localhost:8080/api/v1/merchants', {
+      const response = await fetch('http://localhost:8080/api/v1/items', {
         method: "GET"});
       const data = await response.json();
       console.log(data)
@@ -70,7 +70,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-         Merchants
+         Items
         </title>
       </Head>
       <Box
@@ -89,7 +89,7 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  Merchants
+                  Items
                 </Typography>
                 <Stack
                   alignItems="center"
@@ -131,8 +131,8 @@ const Page = () => {
                 </Button>
               </div>
             </Stack>
-            <MerchantsSearch />
-            <MerchantsTable
+            <ItemSearch />
+            <ItemsTable
               count={merchantsData==null ? 0 :merchantsData.length}
               items={merchantsData == null ? [] : merchantsData}
               onDeselectAll={merchantSelection.handleDeselectAll}

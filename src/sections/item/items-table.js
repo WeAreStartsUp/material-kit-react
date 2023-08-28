@@ -17,7 +17,7 @@ import {
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-export const MerchantsTable = (props) => {
+export const ItemsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -65,17 +65,17 @@ export const MerchantsTable = (props) => {
                   Description
                 </TableCell>
                 <TableCell>
-                  Phone
+                  Price
                 </TableCell>
                 <TableCell>
-                  Address
+                  Veg/Non Veg
                 </TableCell>
                 <TableCell>
-                                  Commission From
-                                </TableCell>
-                                <TableCell>
-                Commission Rate
+                 Merchant
                  </TableCell>
+                 <TableCell>
+                  Zone
+                  </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -123,21 +123,17 @@ export const MerchantsTable = (props) => {
                       {merchant.description}
                     </TableCell>
                     <TableCell>
-                      {merchant.phone}
-                    </TableCell>
-                    <TableCell>
-                      {merchant.addressFirstLine},
-                      {merchant.addressSecondLine},
-                      {merchant.city},
-                      {merchant.state},
-                      {merchant.pincode}
+                      ₹ {merchant.price}
                     </TableCell>
                      <TableCell>
-                                          {merchant.commissionFrom}
-                                       </TableCell>
- <TableCell>
-                                        {merchant.commissionRate}
-                                       </TableCell>
+                      {merchant.isVeg == 1 ? 'Veg' : 'Non Veg'}
+                     </TableCell>
+                    <TableCell>
+                      {merchant.merchants.name}
+                    </TableCell>
+                    <TableCell>
+                                          {merchant.merchants.zones.name}
+                                        </TableCell>
                   </TableRow>
                 );
               })}
@@ -158,7 +154,7 @@ export const MerchantsTable = (props) => {
   );
 };
 
-MerchantsTable.propTypes = {
+ItemsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,
