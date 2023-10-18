@@ -10,6 +10,9 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { MerchantsTable } from 'src/sections/merchant/merchants-table';
 import { MerchantsSearch } from 'src/sections/merchant/merchants-search';
 import { applyPagination } from 'src/utils/apply-pagination';
+import AddMerchantForm from '../sections/merchant/merchants-add'
+import Divider from '@mui/material/Divider';
+
 
 const now = new Date();
 
@@ -35,11 +38,18 @@ const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [merchantsData, setMerchantData] = useState(null);
+  const [addFormEnabled, setAddFormEnabled] = useState(false);
 
   useEffect(() => {
     const getMerchantData = async () => {
+//    let base64 = require('base-64')
+    let username = 'vinothgopi'
+    let password = 'password'
+    let headers = new Headers()
+    headers.append('Authorization', 'Basic dGVzdDpwYXNzd29yZA==')
       const response = await fetch('http://localhost:8080/api/v1/merchants', {
-        method: "GET"});
+        method: "GET",
+        headers: headers});
       const data = await response.json();
       console.log(data)
       setMerchantData(data);
@@ -126,11 +136,14 @@ const Page = () => {
                     </SvgIcon>
                   )}
                   variant="contained"
+                  onClick={() => setAddFormEnabled(!addFormEnabled)}
                 >
                   Add
                 </Button>
               </div>
             </Stack>
+            {addFormEnabled && <AddMerchantForm/>} 
+            <Divider />
             <MerchantsSearch />
             <MerchantsTable
               count={merchantsData==null ? 0 :merchantsData.length}

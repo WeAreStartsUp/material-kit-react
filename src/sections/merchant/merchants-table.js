@@ -35,6 +35,7 @@ export const MerchantsTable = (props) => {
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
 
+  
   return (
     <Card>
       <Scrollbar>
