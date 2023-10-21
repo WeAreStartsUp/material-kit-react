@@ -7,16 +7,13 @@ import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { MerchantsTable } from 'src/sections/merchant/merchants-table';
-import { MerchantsSearch } from 'src/sections/merchant/merchants-search';
+import { OrdersTable } from 'src/sections/orders/orders-table';
+import { OrdersSearch } from 'src/sections/orders/orders-search';
 import { applyPagination } from 'src/utils/apply-pagination';
-import AddMerchantForm from '../sections/merchant/merchants-add'
-import Divider from '@mui/material/Divider';
-
 
 const now = new Date();
 
-const useMerchants = (page, rowsPerPage) => {
+const useOrders = (page, rowsPerPage) => {
   return useMemo(
     () => {
       return applyPagination([], page, rowsPerPage);
@@ -25,42 +22,35 @@ const useMerchants = (page, rowsPerPage) => {
   );
 };
 
-const useMerchantIds = (merchants) => {
+const useOrderIds = (orders) => {
   return useMemo(
     () => {
-      return merchants.map((merchant) => merchant.id);
+      return orders.map((orders) => orders.id);
     },
-    [merchants]
+    [orders]
   );
 };
 
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [merchantsData, setMerchantData] = useState(null);
-  const [addFormEnabled, setAddFormEnabled] = useState(false);
+  const [orderData, setOrderData] = useState(null);
 
   useEffect(() => {
-    const getMerchantData = async () => {
-//    let base64 = require('base-64')
-    let username = 'vinothgopi'
-    let password = 'password'
-    let headers = new Headers()
-    headers.append('Authorization', 'Basic dGVzdDpwYXNzd29yZA==')
-      const response = await fetch('http://localhost:8080/api/v1/merchants', {
-        method: "GET",
-        headers: headers});
+    const getOrderData = async () => {
+      const response = await fetch('http://localhost:8080/api/v1/orders', {
+        method: "GET"});
       const data = await response.json();
       console.log(data)
-      setMerchantData(data);
+      setOrderData(data);
     };
 
-    getMerchantData();
+    getOrderData();
   }, []);
 
-  const merchants = useMerchants(page, rowsPerPage);
-  const merchantIds = useMerchantIds(merchants);
-  const merchantSelection = useSelection(merchantIds);
+  const orders = useOrders(page, rowsPerPage);
+  const orderIds = useOrderIds(orders);
+  const ordersSelection = useSelection(orderIds);
 
   const handlePageChange = useCallback(
     (event, value) => {
@@ -80,7 +70,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-         Merchants
+         Orders
         </title>
       </Head>
       <Box
@@ -99,7 +89,7 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  Merchants
+                  Orders
                 </Typography>
                 <Stack
                   alignItems="center"
@@ -136,27 +126,24 @@ const Page = () => {
                     </SvgIcon>
                   )}
                   variant="contained"
-                  onClick={() => setAddFormEnabled(!addFormEnabled)}
                 >
                   Add
                 </Button>
               </div>
             </Stack>
-            {addFormEnabled && <AddMerchantForm/>} 
-            <Divider />
-            <MerchantsSearch />
-            <MerchantsTable
-              count={merchantsData==null ? 0 :merchantsData.length}
-              items={merchantsData == null ? [] : merchantsData}
-              onDeselectAll={merchantSelection.handleDeselectAll}
-              onDeselectOne={merchantSelection.handleDeselectOne}
+            <OrdersSearch />
+            <OrdersTable
+              count={orderData==null ? 0 :orderData.length}
+              items={orderData == null ? [] : orderData}
+              onDeselectAll={ordersSelection.handleDeselectAll}
+              onDeselectOne={ordersSelection.handleDeselectOne}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={merchantSelection.handleSelectAll}
-              onSelectOne={merchantSelection.handleSelectOne}
+              onSelectAll={ordersSelection.handleSelectAll}
+              onSelectOne={ordersSelection.handleSelectOne}
               page={page}
               rowsPerPage={rowsPerPage}
-              selected={merchantSelection.selected}
+              selected={ordersSelection.selected}
             />
           </Stack>
         </Container>

@@ -17,7 +17,7 @@ import {
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-export const MerchantsTable = (props) => {
+export const OrdersTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -33,9 +33,8 @@ export const MerchantsTable = (props) => {
   } = props;
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
-  const selectedAll = (items.length > 0) && (selected.length === items.length);
+  const selectedAll = (selected.length > 0) && (selected.length === items.length);
 
-  
   return (
     <Card>
       <Scrollbar>
@@ -60,34 +59,34 @@ export const MerchantsTable = (props) => {
                   Id
                 </TableCell>
                 <TableCell>
-                  Name
+                  Merchant
                 </TableCell>
                 <TableCell>
-                  Description
+                  Customer
                 </TableCell>
                 <TableCell>
-                  Phone
+                  Customer Phone
                 </TableCell>
                 <TableCell>
-                  Address
+                  Order Status
                 </TableCell>
                 <TableCell>
-                                  Commission From
-                                </TableCell>
-                                <TableCell>
-                Commission Rate
-                 </TableCell>
+                  Order Start Time
+                </TableCell>
+                <TableCell>
+                  Order Type
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((merchant) => {
-                const isSelected = selected.includes(merchant.id);
+              {items.map((order) => {
+                const isSelected = selected.includes(order.id);
                 // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
                 return (
                   <TableRow
                     hover
-                    key={merchant.id}
+                    key={order.id}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
@@ -95,50 +94,34 @@ export const MerchantsTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(merchant.id);
+                            onSelectOne?.(order.id);
                           } else {
-                            onDeselectOne?.(merchant.id);
+                            onDeselectOne?.(order.id);
                           }
                         }}
                       />
                     </TableCell>
                     <TableCell>
-                      {merchant.id}
+                      {order.id}
                     </TableCell>
                     <TableCell>
-                      {/*<Stack*/}
-                      {/*  alignItems="center"*/}
-                      {/*  direction="row"*/}
-                      {/*  spacing={2}*/}
-                      {/*>*/}
-                      {/*  <Avatar src={customer.avatar}>*/}
-                      {/*    {getInitials(customer.name)}*/}
-                      {/*  </Avatar>*/}
-                      {/*  <Typography variant="subtitle2">*/}
-                      {/*    {customer.name}*/}
-                      {/*  </Typography>*/}
-                      {/*</Stack>*/}
-                      {merchant.name}
+                      {order['merchants'].name}
                     </TableCell>
                     <TableCell>
-                      {merchant.description}
+                      {order['customers'].name}
                     </TableCell>
                     <TableCell>
-                      {merchant.phone}
+                      {order['customers'].phone}
                     </TableCell>
                     <TableCell>
-                      {merchant.addressFirstLine},
-                      {merchant.addressSecondLine},
-                      {merchant.city},
-                      {merchant.state},
-                      {merchant.pincode}
+                      {order.orderStatus}
                     </TableCell>
                      <TableCell>
-                                          {merchant.commissionFrom}
-                                       </TableCell>
- <TableCell>
-                                        {merchant.commissionRate}
-                                       </TableCell>
+                       {order.orderStartTime}
+                     </TableCell>
+                      <TableCell>
+                       {order.orderType}
+                      </TableCell>
                   </TableRow>
                 );
               })}
@@ -159,7 +142,7 @@ export const MerchantsTable = (props) => {
   );
 };
 
-MerchantsTable.propTypes = {
+OrdersTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,

@@ -10,7 +10,8 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { ItemsTable } from 'src/sections/item/items-table';
 import { ItemSearch } from 'src/sections/item/items-search';
 import { applyPagination } from 'src/utils/apply-pagination';
-
+import AddItemForm from '../sections/item/items-add'
+import Divider from '@mui/material/Divider';
 const now = new Date();
 
 const useMerchants = (page, rowsPerPage) => {
@@ -35,6 +36,26 @@ const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [merchantsData, setMerchantData] = useState(null);
+  const [addFormEnabled, setAddFormEnabled] = useState(false);
+
+  const downloadTemplate = async () => {
+    fetch('http://localhost:8080/api/v1/items/template', {
+      method: "GET"}).then((response) => response.blob())
+      .then((blob) => {
+       
+        // 2. Create blob link to download
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `template.xlsx`);
+        // 3. Append to html page
+        document.body.appendChild(link);
+        // 4. Force download
+        link.click();
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link);
+      });
+  }
 
   useEffect(() => {
     const getMerchantData = async () => {
@@ -116,6 +137,17 @@ const Page = () => {
                   >
                     Export
                   </Button>
+                  <Button
+                    color="inherit"
+                    startIcon={(
+                      <SvgIcon fontSize="small">
+                        <ArrowDownOnSquareIcon />
+                      </SvgIcon>
+                    )}
+                    onClick={downloadTemplate}
+                  >
+                    Download Template
+                  </Button>
                 </Stack>
               </Stack>
               <div>
@@ -124,7 +156,8 @@ const Page = () => {
                     <SvgIcon fontSize="small">
                       <PlusIcon />
                     </SvgIcon>
-                  )}
+                  )} 
+                  onClick={() => setAddFormEnabled(!addFormEnabled)}
                   variant="contained"
                 >
                   Add
@@ -132,6 +165,7 @@ const Page = () => {
               </div>
             </Stack>
             <ItemSearch />
+            {addFormEnabled && <AddItemForm />}
             <ItemsTable
               count={merchantsData==null ? 0 :merchantsData.length}
               items={merchantsData == null ? [] : merchantsData}

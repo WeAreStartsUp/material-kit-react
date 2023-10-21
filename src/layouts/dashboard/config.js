@@ -48,6 +48,15 @@ export const items = [
         </SvgIcon>
       )
     },
+    {
+          title: 'Orders',
+          path: '/orders',
+          icon: (
+            <SvgIcon fontSize="small">
+              <CakeIcon />
+            </SvgIcon>
+          )
+        },
 //  {
 //    title: 'Companies',
 //    path: '/companies',
